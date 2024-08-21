@@ -8,7 +8,7 @@ const extensions = {
     systemLevelExtensions: new Array<SystemLevelExtension>(),
     appViewExtensions: new Array<AppViewExtension>(),
     statusPanelExtensions: new Array<StatusPanelExtension>(),
-    toolBarExtensions: new Array<ToolBarExtension>()
+    TopBarExtensions: new Array<TopBarExtension>()
 };
 
 function registerResourceExtension(component: ExtensionComponent, group: string, kind: string, tabTitle: string, opts?: {icon: string}) {
@@ -27,8 +27,8 @@ function registerStatusPanelExtension(component: StatusPanelExtensionComponent, 
     extensions.statusPanelExtensions.push({component, flyout, title, id, isMiddle, isNarrow});
 }
 
-function registerToolBarExtension(component: ToolBarExtensionComponent, title: string, id: string, flyout?: ExtensionComponent, isMiddle = false, isNarrow = false) {
-    extensions.toolBarExtensions.push({component, flyout, title, id, isMiddle, isNarrow});
+function registerTopBarExtension(component: TopBarExtensionComponent, title: string, id: string, flyout?: ExtensionComponent, isMiddle = false, isNarrow = false) {
+    extensions.TopBarExtensions.push({component, flyout, title, id, isMiddle, isNarrow});
 }
 
 let legacyInitialized = false;
@@ -75,9 +75,9 @@ export interface StatusPanelExtension {
     isNarrow: boolean;
 }
 
-export interface ToolBarExtension {
-    component: ToolBarExtensionComponent;
-    flyout?: ToolBarExtensionFlyoutComponent;
+export interface TopBarExtension {
+    component: TopBarExtensionComponent;
+    flyout?: TopBarExtensionFlyoutComponent;
     title: string;
     id: string;
     isMiddle: boolean;
@@ -89,8 +89,8 @@ export type SystemExtensionComponent = React.ComponentType;
 export type AppViewExtensionComponent = React.ComponentType<AppViewComponentProps>;
 export type StatusPanelExtensionComponent = React.ComponentType<StatusPanelComponentProps>;
 export type StatusPanelExtensionFlyoutComponent = React.ComponentType<StatusPanelFlyoutProps>;
-export type ToolBarExtensionComponent = React.ComponentType<ToolBarExtensionComponentProps>;
-export type ToolBarExtensionFlyoutComponent = React.ComponentType<ToolBarExtensionFlyoutProps>;
+export type TopBarExtensionComponent = React.ComponentType<TopBarExtensionComponentProps>;
+export type TopBarExtensionFlyoutComponent = React.ComponentType<TopBarExtensionFlyoutProps>;
 
 export interface Extension {
     component: ExtensionComponent;
@@ -112,7 +112,7 @@ export interface StatusPanelComponentProps {
     openFlyout: () => any;
 }
 
-export interface ToolBarExtensionComponentProps {
+export interface TopBarExtensionComponentProps {
     application: Application;
     tree: ApplicationTree;
     openFlyout: () => any;
@@ -123,7 +123,7 @@ export interface StatusPanelFlyoutProps {
     tree: ApplicationTree;
 }
 
-export interface ToolBarExtensionFlyoutProps {
+export interface TopBarExtensionFlyoutProps {
     application: Application;
     tree: ApplicationTree;
 }
@@ -146,8 +146,8 @@ export class ExtensionsService {
     public getStatusPanelExtensions(): StatusPanelExtension[] {
         return extensions.statusPanelExtensions.slice();
     }
-    public getToolBarExtensions(): ToolBarExtension[] {
-        return extensions.toolBarExtensions.slice();
+    public getTopBarExtensions(): TopBarExtension[] {
+        return extensions.TopBarExtensions.slice();
     }
 }
 
@@ -159,6 +159,6 @@ export class ExtensionsService {
         registerSystemLevelExtension,
         registerAppViewExtension,
         registerStatusPanelExtension,
-        registerToolBarExtension
+        registerTopBarExtension
     };
 })(window);

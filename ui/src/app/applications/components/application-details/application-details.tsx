@@ -30,7 +30,7 @@ import {ApplicationsDetailsAppDropdown} from './application-details-app-dropdown
 import {useSidebarTarget} from '../../../sidebar/sidebar';
 
 import './application-details.scss';
-import {ToolBarExtension, AppViewExtension, StatusPanelExtension} from '../../../shared/services/extensions-service';
+import {TopBarExtension, AppViewExtension, StatusPanelExtension} from '../../../shared/services/extensions-service';
 
 interface ApplicationDetailsState {
     page: number;
@@ -44,8 +44,8 @@ interface ApplicationDetailsState {
     extensionsMap?: {[key: string]: AppViewExtension};
     statusExtensions?: StatusPanelExtension[];
     statusExtensionsMap?: {[key: string]: StatusPanelExtension};
-    toolBarExtensions?: ToolBarExtension[];
-    toolBarExtensionsMap?: {[key: string]: ToolBarExtension};
+    TopBarExtensions?: TopBarExtension[];
+    TopBarExtensionsMap?: {[key: string]: TopBarExtension};
 }
 
 interface FilterInput {
@@ -95,10 +95,10 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{app
         statusExtensions.forEach(ext => {
             statusExtensionsMap[ext.id] = ext;
         });
-        const toolBarExtensions = services.extensions.getToolBarExtensions();
-        const toolBarExtensionsMap: {[key: string]: ToolBarExtension} = {};
-        toolBarExtensions.forEach(ext => {
-            toolBarExtensionsMap[ext.id] = ext;
+        const TopBarExtensions = services.extensions.getTopBarExtensions();
+        const TopBarExtensionsMap: {[key: string]: TopBarExtension} = {};
+        TopBarExtensions.forEach(ext => {
+            TopBarExtensionsMap[ext.id] = ext;
         });
         this.state = {
             page: 0,
@@ -111,8 +111,8 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{app
             extensionsMap,
             statusExtensions,
             statusExtensionsMap,
-            toolBarExtensions,
-            toolBarExtensionsMap
+            TopBarExtensions,
+            TopBarExtensionsMap
         };
         if (typeof this.props.match.params.appnamespace === 'undefined') {
             this.appNamespace = '';
@@ -576,8 +576,8 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{app
                             });
 
                             const activeExtension = this.state.statusExtensionsMap[this.selectedExtension];
-                            const toolBarExtensions = services.extensions.getToolBarExtensions();
-                            const toolBarExtensionsExt = this.state.toolBarExtensionsMap[this.selectedExtension];
+                            const TopBarExtensions = services.extensions.getTopBarExtensions();
+                            const TopBarExtensionsExt = this.state.TopBarExtensionsMap[this.selectedExtension];
 
                             return (
                                 <div className={`application-details ${this.props.match.params.name}`}>
@@ -593,8 +593,8 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{app
                                             actionMenu: {
                                                 items: [...this.getApplicationActionMenu(application, true)]
                                             },
-                                            toolBarExtensions: toolBarExtensions.map(ext => (
-                                                <ToolBarExtensionView
+                                            actionMenuExtensions: TopBarExtensions.map(ext => (
+                                                <TopBarExtensionView
                                                     extension={ext}
                                                     key={ext.id}
                                                     application={application}
@@ -892,11 +892,11 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{app
                                             {this.selectedExtension !== '' && activeExtension?.flyout && <activeExtension.flyout tree={tree} application={application} />}
                                         </SlidingPanel>
                                         <SlidingPanel
-                                            isMiddle={toolBarExtensionsExt?.isMiddle}
-                                            isNarrow={toolBarExtensionsExt?.isNarrow}
-                                            isShown={this.selectedExtension !== '' && toolBarExtensionsExt != null && toolBarExtensionsExt.flyout != null}
+                                            isMiddle={TopBarExtensionsExt?.isMiddle}
+                                            isNarrow={TopBarExtensionsExt?.isNarrow}
+                                            isShown={this.selectedExtension !== '' && TopBarExtensionsExt != null && TopBarExtensionsExt.flyout != null}
                                             onClose={() => this.setExtensionPanelVisible('')}>
-                                            {this.selectedExtension !== '' && toolBarExtensionsExt?.flyout && <toolBarExtensionsExt.flyout tree={tree} application={application} />}
+                                            {this.selectedExtension !== '' && TopBarExtensionsExt?.flyout && <TopBarExtensionsExt.flyout tree={tree} application={application} />}
                                         </SlidingPanel>
                                     </Page>
                                 </div>
@@ -1173,7 +1173,7 @@ const ExtensionView = (props: {extension: AppViewExtension; application: models.
     return <extension.component application={application} tree={tree} />;
 };
 
-const ToolBarExtensionView = (props: {extension: ToolBarExtension; application: models.Application; tree: models.ApplicationTree; showExtension?: (id: string) => any}) => {
+const TopBarExtensionView = (props: {extension: TopBarExtension; application: models.Application; tree: models.ApplicationTree; showExtension?: (id: string) => any}) => {
     const {extension, application, tree, showExtension} = props;
     return <extension.component key={extension.title} application={application} tree={tree} openFlyout={() => showExtension && showExtension(extension.id)} />;
 };

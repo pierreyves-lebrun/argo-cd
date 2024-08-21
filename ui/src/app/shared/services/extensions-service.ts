@@ -23,12 +23,12 @@ function registerAppViewExtension(component: ExtensionComponent, title: string, 
     extensions.appViewExtensions.push({component, title, icon});
 }
 
-function registerStatusPanelExtension(component: StatusPanelExtensionComponent, title: string, id: string, flyout?: ExtensionComponent) {
-    extensions.statusPanelExtensions.push({component, flyout, title, id});
+function registerStatusPanelExtension(component: StatusPanelExtensionComponent, title: string, id: string, flyout?: ExtensionComponent, isMiddle = false, isNarrow = false) {
+    extensions.statusPanelExtensions.push({component, flyout, title, id, isMiddle, isNarrow});
 }
 
-function registerToolBarExtension(component: ToolBarExtensionComponent, title: string, id: string, flyout?: ExtensionComponent) {
-    extensions.toolBarExtensions.push({component, flyout, title, id});
+function registerToolBarExtension(component: ToolBarExtensionComponent, title: string, id: string, flyout?: ExtensionComponent, isMiddle = false, isNarrow = false) {
+    extensions.toolBarExtensions.push({component, flyout, title, id, isMiddle, isNarrow});
 }
 
 let legacyInitialized = false;
@@ -71,6 +71,8 @@ export interface StatusPanelExtension {
     flyout?: StatusPanelExtensionFlyoutComponent;
     title: string;
     id: string;
+    isMiddle: boolean;
+    isNarrow: boolean;
 }
 
 export interface ToolBarExtension {
@@ -78,6 +80,8 @@ export interface ToolBarExtension {
     flyout?: ToolBarExtensionFlyoutComponent;
     title: string;
     id: string;
+    isMiddle: boolean;
+    isNarrow: boolean;
 }
 
 export type ExtensionComponent = React.ComponentType<ExtensionComponentProps>;
@@ -85,7 +89,7 @@ export type SystemExtensionComponent = React.ComponentType;
 export type AppViewExtensionComponent = React.ComponentType<AppViewComponentProps>;
 export type StatusPanelExtensionComponent = React.ComponentType<StatusPanelComponentProps>;
 export type StatusPanelExtensionFlyoutComponent = React.ComponentType<StatusPanelFlyoutProps>;
-export type ToolBarExtensionComponent = React.ComponentType<ToolBarExtensionComponentProps>
+export type ToolBarExtensionComponent = React.ComponentType<ToolBarExtensionComponentProps>;
 export type ToolBarExtensionFlyoutComponent = React.ComponentType<ToolBarExtensionFlyoutProps>;
 
 export interface Extension {

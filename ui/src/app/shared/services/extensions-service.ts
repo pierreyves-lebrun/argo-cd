@@ -105,7 +105,6 @@ export interface AppViewComponentProps {
 
 export interface StatusPanelComponentProps {
     application: Application;
-    tree: ApplicationTree;
     openFlyout: () => any;
 }
 

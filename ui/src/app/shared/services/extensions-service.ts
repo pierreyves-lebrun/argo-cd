@@ -7,7 +7,8 @@ const extensions = {
     resourceExtentions: new Array<ResourceTabExtension>(),
     systemLevelExtensions: new Array<SystemLevelExtension>(),
     appViewExtensions: new Array<AppViewExtension>(),
-    statusPanelExtensions: new Array<StatusPanelExtension>()
+    statusPanelExtensions: new Array<StatusPanelExtension>(),
+    toolBarExtensions: new Array<ToolBarExtension>()
 };
 
 function registerResourceExtension(component: ExtensionComponent, group: string, kind: string, tabTitle: string, opts?: {icon: string}) {
@@ -24,6 +25,10 @@ function registerAppViewExtension(component: ExtensionComponent, title: string, 
 
 function registerStatusPanelExtension(component: StatusPanelExtensionComponent, title: string, id: string, flyout?: ExtensionComponent) {
     extensions.statusPanelExtensions.push({component, flyout, title, id});
+}
+
+function registerToolBarExtension(component: ToolBarExtensionComponent, title: string, id: string, flyout?: ExtensionComponent) {
+    extensions.toolBarExtensions.push({component, flyout, title, id});
 }
 
 let legacyInitialized = false;
@@ -68,11 +73,20 @@ export interface StatusPanelExtension {
     id: string;
 }
 
+export interface ToolBarExtension {
+    component: ToolBarExtensionComponent;
+    flyout?: ToolBarExtensionFlyoutComponent;
+    title: string;
+    id: string;
+}
+
 export type ExtensionComponent = React.ComponentType<ExtensionComponentProps>;
 export type SystemExtensionComponent = React.ComponentType;
 export type AppViewExtensionComponent = React.ComponentType<AppViewComponentProps>;
 export type StatusPanelExtensionComponent = React.ComponentType<StatusPanelComponentProps>;
 export type StatusPanelExtensionFlyoutComponent = React.ComponentType<StatusPanelFlyoutProps>;
+export type ToolBarExtensionComponent = React.ComponentType<ToolBarExtensionComponentProps>
+export type ToolBarExtensionFlyoutComponent = React.ComponentType<ToolBarExtensionFlyoutProps>;
 
 export interface Extension {
     component: ExtensionComponent;
@@ -91,10 +105,22 @@ export interface AppViewComponentProps {
 
 export interface StatusPanelComponentProps {
     application: Application;
+    tree: ApplicationTree;
+    openFlyout: () => any;
+}
+
+export interface ToolBarExtensionComponentProps {
+    application: Application;
+    tree: ApplicationTree;
     openFlyout: () => any;
 }
 
 export interface StatusPanelFlyoutProps {
+    application: Application;
+    tree: ApplicationTree;
+}
+
+export interface ToolBarExtensionFlyoutProps {
     application: Application;
     tree: ApplicationTree;
 }
@@ -117,6 +143,9 @@ export class ExtensionsService {
     public getStatusPanelExtensions(): StatusPanelExtension[] {
         return extensions.statusPanelExtensions.slice();
     }
+    public getToolBarExtensions(): ToolBarExtension[] {
+        return extensions.toolBarExtensions.slice();
+    }
 }
 
 ((window: any) => {
@@ -126,6 +155,7 @@ export class ExtensionsService {
         registerResourceExtension,
         registerSystemLevelExtension,
         registerAppViewExtension,
-        registerStatusPanelExtension
+        registerStatusPanelExtension,
+        registerToolBarExtension
     };
 })(window);
